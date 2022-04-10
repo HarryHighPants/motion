@@ -383,7 +383,7 @@ export class VisualElementDragControls {
             const bounceStiffness = dragElastic ? 200 : 1000000
             const bounceDamping = dragElastic ? 40 : 10000000
 
-            const inertia = {
+            const newTransition = dragTransition ?? {
                 type: "inertia",
                 velocity: dragMomentum ? velocity[axis] : 0,
                 bounceStiffness,
@@ -391,14 +391,13 @@ export class VisualElementDragControls {
                 timeConstant: 750,
                 restDelta: 1,
                 restSpeed: 10,
-                ...dragTransition,
                 ...transition,
             }
 
             // If we're not animating on an externally-provided `MotionValue` we can use the
             // component's animation controls which will handle interactions with whileHover (etc),
             // otherwise we just have to animate the `MotionValue` itself.
-            return this.startAxisValueAnimation(axis, inertia)
+            return this.startAxisValueAnimation(axis, newTransition)
         })
 
         // Run all animations and then resolve the new drag constraints.
